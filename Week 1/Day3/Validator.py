@@ -1,7 +1,12 @@
 from pydantic import BaseModel,EmailStr, field_validator, model_validator,computed_field,Field
 import re
 from datetime import datetime
-from typing import Literal
+from typing import Literal, List, Optional
+
+class Address(BaseModel):
+    street: str
+    city: str
+    postal_code: str
 
 class Student(BaseModel):
     Roll: int = Field(...,
@@ -11,6 +16,7 @@ class Student(BaseModel):
     Addmision_year: int =Field(lenght=4,
                                 example=2025)
     Branch: str = "None"
+    Address: Address
     
 class signup(BaseModel):
     email: EmailStr
@@ -37,9 +43,37 @@ class signup(BaseModel):
     
     DOB: datetime
 
-    number1: int
-    number2: int
+class Calculator(BaseModel):
+    number1: float
+    number2: float
     operation: Literal["+","-","*","/","%","^"]
+
+    @computed_field
+    @property
+    def Calc(self)->float: 
+        if self.operation=="+": 
+            return self.number1 + self.number2
+        elif self.operation=="-":
+            return self.number1 - self.number2
+        elif self.operation=="*":
+            return self.number1 * self.number2
+        elif self.operation=="/":
+            if self.number2 == 0:
+                raise ValueError("Cannot divide by zero")
+            return self.number1 / self.number2
+        elif self.operation=="%":
+            if self.number2 == 0:
+                raise ValueError("Cannot modulo by zero")
+            return self.number1 % self.number2
+        elif self.operation=="^":
+            return self.number1 ** self.number2
     
-    
-    
+class Comment(BaseModel):
+    id: int
+    content: str
+    replies: Optional[List['Comment']] = None
+
+Comment.model_rebuild()
+
+
+
