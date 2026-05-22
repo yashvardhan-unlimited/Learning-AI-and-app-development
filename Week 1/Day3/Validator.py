@@ -13,7 +13,7 @@ class Student(BaseModel):
                       length=8,
                       example=25110357)
     Name: str = Field(example="Yashvardhan Gupta"),
-    Addmision_year: int =Field(lenght=4,
+    Addmision_year: int =Field(length=4,
                                 example=2025)
     Branch: str = "None"
     Address: Address
