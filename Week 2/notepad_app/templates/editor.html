@@ -1,0 +1,120 @@
+{% extends "base.html" %}
+{# note is None when creating, or a dict when editing #}
+{% block title %}{{ "Edit Note" if note else "New Note" }}{% endblock %}
+
+{% block content %}
+<div class="app-layout">
+
+  {# ── Sidebar (same as dashboard) ── #}
+  <aside class="sidebar">
+    <div class="sidebar-brand">
+      <span class="brand-icon-sm">✦</span>
+      <span class="brand-name-sm">Folio</span>
+    </div>
+    <nav class="sidebar-nav">
+      <a href="/dashboard" class="nav-item">
+        <span class="nav-icon">◈</span> All Notes
+      </a>
+      <a href="/notes/new" class="nav-item {% if not note %}active{% endif %}">
+        <span class="nav-icon">＋</span> New Note
+      </a>
+    </nav>
+    <div class="sidebar-footer">
+      <a href="/logout" class="btn btn-ghost btn-sm sidebar-logout">Sign out</a>
+    </div>
+  </aside>
+
+  {# ── Editor area ── #}
+  <main class="main-content editor-main">
+
+    <header class="topbar">
+      <h2 class="page-title">
+        {{ "Edit Note" if note else "New Note" }}
+      </h2>
+      <a href="/dashboard" class="btn btn-ghost btn-sm">← Back to notes</a>
+    </header>
+
+    {% if error %}
+      <div class="alert alert-error">{{ error }}</div>
+    {% endif %}
+
+    {#
+      The form action changes based on whether we're creating or editing:
+        - Create: POST /notes/new
+        - Edit:   POST /notes/{note_id}/edit
+    #}
+    <form
+      action="{% if note %}/notes/{{ note.id }}/edit{% else %}/notes/new{% endif %}"
+      method="post"
+      class="editor-form"
+    >
+
+      <div class="field">
+        <label for="title">Title</label>
+        <input
+          id="title"
+          type="text"
+          name="title"
+          class="title-input"
+          placeholder="Give your note a title…"
+          value="{{ note.title if note else '' }}"
+          autocomplete="off"
+          required
+        />
+      </div>
+
+      <div class="field field-grow">
+        <label for="content">Content</label>
+        <textarea
+          id="content"
+          name="content"
+          class="content-textarea"
+          placeholder="Start writing…"
+          rows="20"
+        >{{ note.content if note else '' }}</textarea>
+
+        {# Character counter — reads textarea length via JS #}
+        <div class="char-counter">
+          <span id="char-count">0</span> characters
+        </div>
+      </div>
+
+      <div class="editor-actions">
+        <a href="/dashboard" class="btn btn-ghost">Cancel</a>
+        <button type="submit" class="btn btn-primary">
+          {{ "Save Changes" if note else "Create Note" }}
+        </button>
+      </div>
+
+    </form>
+
+    {# ── Note metadata (edit mode only) ── #}
+    {% if note %}
+      <div class="note-meta-bar">
+        <span>Created: {{ note.created_at[:10] }}</span>
+        <span>Last updated: {{ note.updated_at[:10] }}</span>
+      </div>
+    {% endif %}
+
+  </main>
+</div>
+
+{#
+  This is the only inline script in the app — a simple character counter.
+  It reads the textarea value length and updates a span. No libraries needed.
+#}
+<script>
+  const textarea = document.getElementById('content');
+  const counter  = document.getElementById('char-count');
+
+  function updateCount() {
+    counter.textContent = textarea.value.length.toLocaleString();
+  }
+
+  // Count on page load (for edit mode where content is pre-filled)
+  updateCount();
+
+  // Count on every keystroke
+  textarea.addEventListener('input', updateCount);
+</script>
+{% endblock %}

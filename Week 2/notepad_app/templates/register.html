@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+{% block title %}Create Account{% endblock %}
+
+{% block content %}
+<div class="auth-wrapper">
+
+  <div class="auth-brand">
+    <div class="brand-inner">
+      <span class="brand-icon">✦</span>
+      <h1 class="brand-name">Folio</h1>
+      <p class="brand-tagline">Start capturing your ideas today.</p>
+    </div>
+    <div class="brand-decoration">
+      <div class="dec-circle c1"></div>
+      <div class="dec-circle c2"></div>
+      <div class="dec-circle c3"></div>
+    </div>
+  </div>
+
+  <div class="auth-form-panel">
+    <div class="auth-card">
+      <h2 class="auth-title">Create account</h2>
+      <p class="auth-subtitle">Free forever, no credit card needed</p>
+
+      {% if error %}
+        <div class="alert alert-error">{{ error }}</div>
+      {% endif %}
+
+      <form action="/register" method="post" class="auth-form">
+
+        <div class="field">
+          <label for="username">Username</label>
+          <input
+            id="username"
+            type="text"
+            name="username"
+            placeholder="choose_a_username"
+            autocomplete="username"
+            minlength="3"
+            required
+          />
+          <span class="field-hint">Minimum 3 characters, lowercase</span>
+        </div>
+
+        <div class="field">
+          <label for="password">Password</label>
+          <input
+            id="password"
+            type="password"
+            name="password"
+            placeholder="at least 6 characters"
+            autocomplete="new-password"
+            minlength="6"
+            required
+          />
+        </div>
+
+        <div class="field">
+          <label for="confirm_password">Confirm Password</label>
+          <input
+            id="confirm_password"
+            type="password"
+            name="confirm_password"
+            placeholder="repeat password"
+            autocomplete="new-password"
+            minlength="6"
+            required
+          />
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-full">Create Account</button>
+      </form>
+
+      <p class="auth-switch">
+        Already have an account? <a href="/login">Sign in</a>
+      </p>
+    </div>
+  </div>
+
+</div>
+{% endblock %}

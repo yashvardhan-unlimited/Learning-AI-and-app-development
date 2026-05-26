@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block title %}{{ "Edit" if note else "New Note" }}{% endblock %}
+
+{% block content %}
+<div class="page">
+
+  <div class="topbar">
+    <h1>{{ "Edit Note" if note else "New Note" }}</h1>
+    <a href="/dashboard" class="btn btn-outline">← Back</a>
+  </div>
+
+  {% if error %}
+    <p class="error">{{ error }}</p>
+  {% endif %}
+
+  <form action="{% if note %}/notes/{{ note.id }}/edit{% else %}/notes/new{% endif %}" method="post" class="editor-form">
+
+    <label>Title</label>
+    <input type="text" name="title" value="{{ note.title if note else '' }}" required autofocus />
+
+    <label>Content</label>
+    <textarea name="content" rows="15">{{ note.content if note else '' }}</textarea>
+
+    <div class="form-actions">
+      <a href="/dashboard" class="btn btn-outline">Cancel</a>
+      <button type="submit" class="btn">Save</button>
+    </div>
+
+  </form>
+
+</div>
+{% endblock %}

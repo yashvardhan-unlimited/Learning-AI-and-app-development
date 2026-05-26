@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block title %}My Notes{% endblock %}
+
+{% block content %}
+<div class="page">
+
+  <div class="topbar">
+    <h1>My Notes</h1>
+    <div>
+      <span class="username">{{ username }}</span>
+      <a href="/notes/new" class="btn">+ New Note</a>
+      <a href="/logout" class="btn btn-outline">Logout</a>
+    </div>
+  </div>
+
+  {% if notes %}
+    <div class="notes-grid">
+      {% for note in notes %}
+        <div class="card">
+          <h3>{{ note.title }}</h3>
+          <p class="preview">{{ note.content[:100] }}{% if note.content|length > 100 %}…{% endif %}</p>
+          <p class="date">{{ note.created_at }}</p>
+          <div class="card-actions">
+            <a href="/notes/{{ note.id }}/edit" class="btn btn-sm">Edit</a>
+            <form action="/notes/{{ note.id }}/delete" method="post" style="display:inline">
+              <button type="submit" class="btn btn-sm btn-danger"
+                onclick="return confirm('Delete this note?')">Delete</button>
+            </form>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  {% else %}
+    <div class="empty">
+      <p>No notes yet.</p>
+      <a href="/notes/new" class="btn">Create your first note</a>
+    </div>
+  {% endif %}
+
+</div>
+{% endblock %}
