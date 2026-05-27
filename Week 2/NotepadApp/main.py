@@ -17,9 +17,11 @@ from pymongo import MongoClient
 from bson import ObjectId
 from datetime import datetime
 import hashlib
+from pymongo.server_api import ServerApi
+from dotenv import load_dotenv
+import os
 
-
-
+load_dotenv()
 
 # Password hashing functions using bcrypt. ===================
 
@@ -78,7 +80,12 @@ templates = Jinja2Templates(directory="templates")
 #   - Mac:     Run "brew services start mongodb-community"
 #   - Linux:   Run "sudo systemctl start mongod"
 
-client = MongoClient("mongodb://localhost:27017")
+db_password = os.getenv("MONGO_DB_PASSWORD")
+uri = f"mongodb+srv://devyashg8_db_user:{db_password}@yashvardhan-gupta.wdzlvfo.mongodb.net/?appName=Yashvardhan-Gupta"
+
+# Create a new client and connect to the server
+client = MongoClient(uri)
+
 
 # Select (or create) the database named "notepad_db"
 # MongoDB creates it automatically when you first insert data
