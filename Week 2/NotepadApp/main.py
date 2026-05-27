@@ -16,6 +16,17 @@ from starlette.middleware.sessions import SessionMiddleware
 from pymongo import MongoClient
 from bson import ObjectId
 from datetime import datetime
+import hashlib
+
+
+
+
+# Password hashing functions using bcrypt. ===================
+
+def hash(input_string):
+    return hashlib.sha256(input_string.encode()).hexdigest()
+
+# ============================================================
 
 
 # ============================================================
@@ -185,7 +196,7 @@ def register(
     # MongoDB insert_one() adds a new document (like a row in SQL) to the collection.
     users_collection.insert_one({
         "username": username,
-        "password": password,       # ⚠ PLAIN TEXT - only for learning!
+        "password": str(hash(password)),       # ⚠ PLAIN TEXT - only for learning!
         "created_at": datetime.now()
     })
 
@@ -226,7 +237,7 @@ def login(
     #   compare the hashed password using bcrypt.checkpw().
     user = users_collection.find_one({
         "username": username,
-        "password": password  # ⚠ PLAIN TEXT check - only for learning!
+        "password": str(hash(password))  # ⚠ PLAIN TEXT check - only for learning!
     })
 
     if not user:
@@ -335,7 +346,7 @@ def create_note(
         # Example output: "24 Jul 2025, 03:45 PM"
     })
 
-    return RedirectResponse(url="/dashboard", status_code=302)
+    return RedirectResponse(url="/dashboard", status_code=302) 
 
 
 # ============================================================
@@ -460,3 +471,7 @@ def logout(request: Request):
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True)
+
+
+
+# This is the end of the main.py file. The app is now complete and ready to run!
