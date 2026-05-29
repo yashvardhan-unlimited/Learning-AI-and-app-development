@@ -74,11 +74,12 @@ templates = Jinja2Templates(directory="templates")
 # ============================================================
 # MongoClient connects to a running MongoDB server.
 # By default, MongoDB runs on localhost (your computer) at port 27017.
-#
+# 
 # HOW TO START MONGODB:
 #   - Windows: Run "mongod" in your terminal
 #   - Mac:     Run "brew services start mongodb-community"
 #   - Linux:   Run "sudo systemctl start mongod"
+
 
 db_password = os.getenv("MONGO_DB_PASSWORD")
 uri = f"mongodb+srv://devyashg8_db_user:{db_password}@yashvardhan-gupta.wdzlvfo.mongodb.net/?appName=Yashvardhan-Gupta"
