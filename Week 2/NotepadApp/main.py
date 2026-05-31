@@ -212,6 +212,7 @@ def register(
     return RedirectResponse(url="/login", status_code=302)
 
 
+
 # ============================================================
 # ROUTE: Login (GET) - Show the login form
 # ============================================================
@@ -226,6 +227,7 @@ def login_page(request: Request):
             "error": None
         }
     )
+
 
 
 # ============================================================
