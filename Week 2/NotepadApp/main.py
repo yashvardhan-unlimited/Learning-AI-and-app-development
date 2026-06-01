@@ -204,7 +204,7 @@ def register(
     # MongoDB insert_one() adds a new document (like a row in SQL) to the collection.
     users_collection.insert_one({
         "username": username,
-        "password": str(hash(password)),       # ⚠ PLAIN TEXT - only for learning!
+        "password": str(hash(password)),
         "created_at": datetime.now()
     })
 
@@ -247,7 +247,7 @@ def login(
     #   compare the hashed password using bcrypt.checkpw().
     user = users_collection.find_one({
         "username": username,
-        "password": str(hash(password))  # ⚠ PLAIN TEXT check - only for learning!
+        "password": str(hash(password)) 
     })
 
     if not user:
