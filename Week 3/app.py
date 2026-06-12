@@ -13,3 +13,4 @@ def banklogin():
     # In a real application, you should never store passwords in plain text.
     # Instead, you should hash the password using a secure hashing algorithm like bcrypt,
     # and then store the hashed password in the database. When verifying the password,
+    # Anew feature
